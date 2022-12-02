@@ -1,5 +1,9 @@
 import express from "express";
 import authRoutes from "./routes/auth";
+import dotenv from "dotenv";
+
+dotenv.config();
+const PORT = process.env.port;
 
 const app = express();
 
@@ -8,6 +12,6 @@ app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => res.send("hello"));
 
-app.listen(5000, () => {
-  console.log(`Server listening on port 5000`);
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
