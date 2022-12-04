@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async () => {
     let response;
-    const { data: loginData } = await axios.post("http://localhost:5001/auth/login", {
+    const { data: signupData } = await axios.post("http://localhost:5001/auth/signup", {
       email,
       password,
     });
-    response = loginData;
+    response = signupData;
 
     if (response.errors.length) {
       // If there is an error, return the first error in the errors array
@@ -33,7 +33,7 @@ const Login = () => {
       }}
     >
       <div>
-        <h3>Login</h3>
+        <h3>Signup</h3>
       </div>
       <form>
         <div>
@@ -54,4 +54,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
