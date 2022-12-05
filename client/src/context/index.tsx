@@ -30,7 +30,7 @@ const UserProvider = ({ children }: any) => {
   }
 
   const fetchUser = async () => {
-    const { data: response } = await axios.get("http://localhost5001/auth/me"); // Get the current user logged in
+    const { data: response } = await axios.get("http://localhost:5001/auth/me"); // Get the current user logged in
 
     if (response && response.data.user) {
       // If data exists and there is a user in the data
