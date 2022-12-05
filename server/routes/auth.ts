@@ -108,6 +108,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/me", checkAuth, async (req, res) => {
+  // Route to check the user logged in
   const user = await User.findOne({ email: req.user });
 
   return res.json({
