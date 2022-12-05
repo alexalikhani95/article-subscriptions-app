@@ -9,7 +9,7 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     let response;
     const { data: signupData } = await axios.post("http://localhost:5001/auth/signup", {

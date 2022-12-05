@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     let response;
     const { data: loginData } = await axios.post("http://localhost:5001/auth/login", {
