@@ -108,16 +108,17 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/me", checkAuth, async (req, res) => {
-  // Route to check the user logged in
   const user = await User.findOne({ email: req.user });
 
   return res.json({
     errors: [],
     data: {
-      // @ts-ignore
-      id: user._id,
-      // @ts-ignore
-      email: user.email,
+      user: {
+        // @ts-ignore
+        id: user._id,
+        // @ts-ignore
+        email: user.email,
+      },
     },
   });
 });

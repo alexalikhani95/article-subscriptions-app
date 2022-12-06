@@ -4,8 +4,6 @@ import { UserContext } from "../context";
 
 const NavBar = () => {
   const [state, setState] = useContext(UserContext);
-
-  console.log(state);
   return (
     <div style={{ borderBottom: "1px solid blue", display: "flex" }}>
       <div style={{ margin: "20px" }}>

@@ -11,6 +11,7 @@ interface User {
 }
 
 const UserContext = createContext<[User, React.Dispatch<React.SetStateAction<User>>]>([
+  // Type of use state hook that has the User interface data
   { data: null, loading: true, error: null },
   () => {},
 ]);
