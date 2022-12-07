@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  const [state, setState] = useContext(UserContext);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -22,7 +25,19 @@ const Login = () => {
       return setErrorMsg(response.errors[0].msg);
     }
 
+    setState({
+      data: {
+        id: response.data.user.id,
+        email: response.data.user.email,
+      },
+      loading: false,
+      error: null,
+    });
+
+    console.log(state);
+
     localStorage.setItem("token", response.data.token); // Store the user token in localstorage
+    axios.defaults.headers.common["authorization"] = `Bearer ${response.data.token}`; // Set axios header to have token
 
     navigate("/dashboard");
   };
