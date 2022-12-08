@@ -29,6 +29,7 @@ const Login = () => {
       data: {
         id: response.data.user.id,
         email: response.data.user.email,
+        stripeCustomerId: response.data.user.stripeCustomerId,
       },
       loading: false,
       error: null,
