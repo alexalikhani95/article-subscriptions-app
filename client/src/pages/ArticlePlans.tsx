@@ -14,6 +14,14 @@ const ArticlePlans = () => {
     setPrices(response.data);
   };
 
+  const createSession = async (priceId: string) => {
+    const { data: response } = await axios.post("http://localhost:5001/subs/session", {
+      priceId,
+    });
+
+    window.location.href = response.url; // open the stripe url to make the payment
+  };
+
   return (
     <div style={{ display: "flex" }}>
       {prices.map((price: any) => (
@@ -30,6 +38,7 @@ const ArticlePlans = () => {
         >
           <h2>{price.nickname}</h2>
           <h3>£{price.unit_amount / 100} per month</h3>
+          <button onClick={() => createSession(price.id)}>Buy now</button>
         </div>
       ))}
     </div>
