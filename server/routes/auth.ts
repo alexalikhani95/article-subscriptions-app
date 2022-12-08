@@ -4,6 +4,7 @@ import User from "../models/User";
 import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 import { checkAuth } from "../middleware/checkAuth";
+import { stripe } from "../utils/stripe";
 
 const router = express.Router();
 
@@ -40,9 +41,19 @@ router.post(
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const customer = await stripe.customers.create(
+      {
+        email,
+      },
+      {
+        apiKey: process.env.STRIPE_SECRET_KEY,
+      }
+    );
+
     const newUser = await User.create({
       email,
       password: hashedPassword,
+      stripeCustomerId: customer.id,
     });
 
     const token = await JWT.sign({ email: newUser.email }, process.env.JWT_SECRET as string, {
@@ -56,6 +67,7 @@ router.post(
         user: {
           id: newUser._id, // underscore before id as there is one in mongodb
           email: newUser.email,
+          stripeCustomerId: customer.id,
         },
       },
     });
@@ -114,10 +126,9 @@ router.get("/me", checkAuth, async (req, res) => {
     errors: [],
     data: {
       user: {
-        // @ts-ignore
-        id: user._id,
-        // @ts-ignore
-        email: user.email,
+        id: user?._id,
+        email: user?.email,
+        stripeCustomerId: user?.stripeCustomerId,
       },
     },
   });
