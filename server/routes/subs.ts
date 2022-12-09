@@ -17,15 +17,6 @@ router.get("/prices", checkAuth, async (req, res) => {
 router.post("/session", checkAuth, async (req, res) => {
   const user = await User.findOne({ email: req.user });
 
-  Article.create({
-    title: "Zebras",
-    imageUrl:
-      "https://images.unsplash.com/photo-1666723655505-419fd684c451?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDM3fEpwZzZLaWRsLUhrfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-    access: "Basic",
-  });
-
   const session = await stripe.checkout.sessions.create(
     {
       mode: "subscription",
