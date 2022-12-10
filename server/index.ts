@@ -1,6 +1,7 @@
 import express from "express";
 import authRoutes from "./routes/auth";
 import subsRoutes from "./routes/subs";
+import articlesRoutes from "./routes/articles";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -14,6 +15,7 @@ app.use(express.json()); // express. json() is a built in middleware function in
 app.use(cors());
 app.use("/auth", authRoutes);
 app.use("/subs", subsRoutes);
+app.use("/articles", articlesRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI as string)
