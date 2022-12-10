@@ -53,7 +53,7 @@ const Articles = () => {
       ) : (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <h2>No articles</h2>
-          <Link to="/">Buy a subscription plan</Link>
+          <Link to="/article-plans">Buy a subscription plan</Link>
         </div>
       )}
     </div>
