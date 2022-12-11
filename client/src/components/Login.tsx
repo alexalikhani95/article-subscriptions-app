@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context";
+import "./login.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,25 +43,17 @@ const Login = () => {
   };
 
   return (
-    <div
-      style={{
-        height: 400,
-        width: 300,
-        border: "2px solid darkgreen",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="login-card">
       <div>
         <h3>Login</h3>
       </div>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="login-card-mb">
           <label>Email</label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
 
-        <div>
+        <div className="login-card-mb">
           <label>Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
