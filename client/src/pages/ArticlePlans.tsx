@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import "./article-plans.css";
 
 const ArticlePlans = () => {
   const [prices, setPrices] = useState<any>([]);
@@ -25,17 +26,7 @@ const ArticlePlans = () => {
   return (
     <div style={{ display: "flex" }}>
       {prices.map((price: any) => (
-        <div
-          style={{
-            border: "3px solid blue",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            margin: "20px",
-            width: "200px",
-          }}
-          key={price.id}
-        >
+        <div className="article-plan-card" key={price.id}>
           <h2>{price.nickname}</h2>
           <h3>£{price.unit_amount / 100} per month</h3>
           <button onClick={() => createSession(price.id)}>Buy now</button>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "./articles.css";
 
 interface Article {
   id: string;
@@ -24,24 +25,9 @@ const Articles = () => {
   return (
     <div>
       {articles.length ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <div className="articles-container">
           {articles.map((article) => (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: 400,
-                border: "2px solid black",
-                marginBottom: 20,
-              }}
-            >
+            <div className="article-card">
               {article.imageUrl && (
                 <img src={article.imageUrl} alt="Article" style={{ height: 200, width: 200 }} />
               )}
@@ -51,9 +37,9 @@ const Articles = () => {
           ))}
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div className="articles-container">
           <h2>No articles</h2>
-          <Link to="/article-plans">Buy a subscription plan</Link>
+          <Link to="/article-plans">Click here to buy a subscription plan</Link>
         </div>
       )}
     </div>
