@@ -12,8 +12,6 @@ interface Article {
 }
 
 const Articles = () => {
-  // const [articles, setArticles] = useState<Article[]>([]); // The type of state is an array of type Article
-
   const fetchArticles = async (): Promise<Article[]> => {
     const { data: response } = await axios.get("http://localhost:5001/articles");
     return response;
@@ -22,10 +20,6 @@ const Articles = () => {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["articles"],
     queryFn: fetchArticles,
-  });
-
-  useEffect(() => {
-    fetchArticles();
   });
 
   if (isError) {
