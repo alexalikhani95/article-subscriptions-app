@@ -22,8 +22,6 @@ const Articles = () => {
     queryFn: fetchArticles,
   });
 
-  console.log(data);
-
   if (isError) {
     return (
       <div>
@@ -44,8 +42,8 @@ const Articles = () => {
     <div>
       {data && data.length ? (
         <div className="articles-container">
-          {data.map((article: any) => (
-            <div className="article-card">
+          {data.map((article: Article) => (
+            <div className="article-card" key={article.id}>
               {article.imageUrl && (
                 <img src={article.imageUrl} alt="Article" style={{ height: 200, width: 200 }} />
               )}
