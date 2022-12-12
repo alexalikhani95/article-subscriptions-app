@@ -22,6 +22,8 @@ const Articles = () => {
     queryFn: fetchArticles,
   });
 
+  console.log(data);
+
   if (isError) {
     return (
       <div>
@@ -40,7 +42,7 @@ const Articles = () => {
 
   return (
     <div>
-      {data ? (
+      {data && data.length ? (
         <div className="articles-container">
           {data.map((article: any) => (
             <div className="article-card">
