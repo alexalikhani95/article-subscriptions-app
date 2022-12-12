@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./articles.css";
@@ -7,14 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 interface Article {
   id: string;
   title: string;
-  imageUrl: string;
+  imageUrl?: string;
   content: string;
 }
 
 const Articles = () => {
   // const [articles, setArticles] = useState<Article[]>([]); // The type of state is an array of type Article
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (): Promise<Article[]> => {
     const { data: response } = await axios.get("http://localhost:5001/articles");
     return response;
   };
