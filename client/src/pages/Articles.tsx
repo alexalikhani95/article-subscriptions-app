@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./articles.css";
+import { useQuery } from "@tanstack/react-query";
 
 interface Article {
   id: string;
@@ -11,22 +12,43 @@ interface Article {
 }
 
 const Articles = () => {
-  const [articles, setArticles] = useState<Article[]>([]); // The type of state is an array of type Article
+  // const [articles, setArticles] = useState<Article[]>([]); // The type of state is an array of type Article
 
   const fetchArticles = async () => {
     const { data: response } = await axios.get("http://localhost:5001/articles");
-    setArticles(response);
+    return response;
   };
+
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ["articles"],
+    queryFn: fetchArticles,
+  });
 
   useEffect(() => {
     fetchArticles();
   });
 
+  if (isError) {
+    return (
+      <div>
+        <p>Oops, There was an error fetching the articles.</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {articles.length ? (
+      {data ? (
         <div className="articles-container">
-          {articles.map((article) => (
+          {data.map((article: any) => (
             <div className="article-card">
               {article.imageUrl && (
                 <img src={article.imageUrl} alt="Article" style={{ height: 200, width: 200 }} />
