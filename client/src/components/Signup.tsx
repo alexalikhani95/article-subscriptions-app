@@ -3,6 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context";
 import "./login.css";
+import { useMutation } from "@tanstack/react-query";
+
+interface UserData {
+  email: string;
+  password: string;
+}
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,34 +19,37 @@ const Signup = () => {
 
   const [state, setState] = useContext(UserContext);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    let response;
-    const { data: signupData } = await axios.post("http://localhost:5001/auth/signup", {
-      email,
-      password,
-    });
-    response = signupData;
+  const handleSignup = async (signupDetails: UserData) => {
+    let response = await axios.post("http://localhost:5001/auth/signup", signupDetails);
 
-    if (response.errors.length) {
+    if (response.data.errors.length) {
       // If there is an error, return the first error in the errors array
-      return setErrorMsg(response.errors[0].msg);
+      return setErrorMsg(response.data.errors[0].msg);
     }
+
+    const userData = response.data.data;
 
     setState({
       data: {
-        id: response.data.user.id,
-        email: response.data.user.email,
-        stripeCustomerId: response.data.user.stripeCustomerId,
+        id: userData.user.id,
+        email: userData.user.email,
+        stripeCustomerId: userData.user.stripeCustomerId,
       },
       loading: false,
       error: null,
     });
 
-    localStorage.setItem("token", response.data.token); // Store the user token in localstorage
-    axios.defaults.headers.common["authorization"] = `bearer ${response.data.token}`; // Set axios header to have token
+    localStorage.setItem("token", userData.token); // Store the user token in localstorage
+    axios.defaults.headers.common["authorization"] = `bearer ${userData.token}`; // Set axios header to have token
 
     navigate("/dashboard");
+  };
+
+  const { mutate: signupMutation } = useMutation(handleSignup);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signupMutation({ email, password });
   };
 
   return (

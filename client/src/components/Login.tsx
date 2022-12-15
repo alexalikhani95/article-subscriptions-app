@@ -45,7 +45,7 @@ const Login = () => {
 
   const { mutate: loginMutation } = useMutation(handleLogin);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     loginMutation({ email, password });
   };
