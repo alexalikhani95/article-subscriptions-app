@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context";
 import "./login.css";
 import { useMutation } from "@tanstack/react-query";
-
-interface UserData {
-  email: string;
-  password: string;
-}
+import { UserData } from "../types/user";
 
 const Login = () => {
   const navigate = useNavigate();
