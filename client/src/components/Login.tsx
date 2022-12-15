@@ -3,6 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context";
 import "./login.css";
+import { useMutation } from "@tanstack/react-query";
+
+interface UserData {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,34 +18,36 @@ const Login = () => {
 
   const [state, setState] = useContext(UserContext);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    let response;
-    const { data: loginData } = await axios.post("http://localhost:5001/auth/login", {
-      email,
-      password,
-    });
-    response = loginData;
+  const handleLogin = async (loginDetails: UserData) => {
+    let response = await axios.post("http://localhost:5001/auth/login", loginDetails);
 
-    if (response.errors.length) {
+    if (response.data.errors.length) {
       // If there is an error, return the first error in the errors array
-      return setErrorMsg(response.errors[0].msg);
+      return setErrorMsg(response.data.errors[0].msg);
     }
+
+    const userData = response.data.data;
 
     setState({
       data: {
-        id: response.data.user.id,
-        email: response.data.user.email,
-        stripeCustomerId: response.data.user.stripeCustomerId,
+        id: userData.user.id,
+        email: userData.user.email,
+        stripeCustomerId: userData.user.stripeCustomerId,
       },
       loading: false,
       error: null,
     });
 
-    localStorage.setItem("token", response.data.token); // Store the user token in localstorage
-    axios.defaults.headers.common["authorization"] = `Bearer ${response.data.token}`; // Set axios header to have token
-
+    axios.defaults.headers.common["authorization"] = `Bearer ${userData.token}`; // Set axios header to have token
+    localStorage.setItem("token", userData.token); // Store the user token in localstorage
     navigate("/dashboard");
+  };
+
+  const { mutate: loginMutation } = useMutation(handleLogin);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    loginMutation({ email, password });
   };
 
   return (
@@ -57,7 +65,7 @@ const Login = () => {
           <label>Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        {errorMsg && <p>{errorMsg}</p>}
+        {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
         <button type="submit">Submit</button>
       </form>
     </div>
